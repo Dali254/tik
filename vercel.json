@@ -4,8 +4,8 @@
     {
       "source": "/sw.js",
       "headers": [
-        { "key": "Cache-Control",              "value": "public, max-age=0, must-revalidate" },
-        { "key": "Service-Worker-Allowed",     "value": "/" }
+        { "key": "Cache-Control",          "value": "public, max-age=0, must-revalidate" },
+        { "key": "Service-Worker-Allowed", "value": "/" }
       ]
     },
     {
@@ -16,13 +16,11 @@
     }
   ],
   "routes": [
-    { "src": "/sw.js",              "dest": "/sw.js"               },
-    { "src": "/manifest.json",      "dest": "/manifest.json"       },
+    { "handle": "filesystem" },
     { "src": "/api/mpesa/stkpush",  "dest": "/api/mpesa/stkpush.js"  },
     { "src": "/api/mpesa/callback", "dest": "/api/mpesa/callback.js" },
     { "src": "/api/mpesa/status",   "dest": "/api/mpesa/status.js"   },
     { "src": "/api/packages",       "dest": "/api/packages.js"        },
-    { "src": "/admin",              "dest": "/admin.html"             },
-    { "src": "/(.*)",               "dest": "/index.html"             }
+    { "src": "/admin",              "dest": "/admin.html"             }
   ]
 }
