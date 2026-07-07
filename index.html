@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- 1. HEAD -->
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="TikTok Followers">
+  <meta name="application-name" content="TikTok Followers">
+  <meta name="description" content="Buy real TikTok followers securely via M-Pesa. Fast delivery within 72 hours.">
+  <title>Buy TikTok Followers — Fast &amp; Secure via M-Pesa</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,400;0,6..12,600;0,6..12,700;0,6..12,800;0,6..12,900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="img/icone.ico"/>
+  <link rel="apple-touch-icon" sizes="192x192" href="img/icon-192.png"/>
+  <link rel="apple-touch-icon" sizes="512x512" href="img/icon-512.png"/>
+  <link rel="manifest" href="/manifest.json"/>
+</head>
+<!-- END 1. -->
+
+<body>
+
+  <!-- TIKTOK LOADER (startup splash) -->
+  <div id="tiktok-splash" class="tiktok-splash">
+    <span class="tiktok-loader"></span>
+  </div>
+  <!-- END SPLASH -->
+
+  <!-- HEADER -->
+  <header>
+    <div class="hdr-inner">
+      <div class="logo">
+        <a href="/"><img src="img/tiktok.png" alt="TikTok"></a>
+      </div>
+      <div class="hdr-title">Buy Followers</div>
+    </div>
+  </header>
+  <!-- END HEADER -->
+
+  <!-- MAIN CONTENT -->
+  <main class="main-container">
+
+    <h1 class="page-title">Get TikTok Followers</h1>
+    <p class="page-sub">Real followers • Fast delivery • Secure M-Pesa payment</p>
+
+    <!-- STEP 1: Enter username -->
+    <section class="step-card" id="step-username">
+      <div class="step-label"><span class="step-num">1</span>Enter your TikTok username</div>
+      <div class="input-row">
+        <div class="input-wrap">
+          <span class="at-sign">@</span>
+          <input type="text" id="username-input" class="username-input"
+            placeholder="your_username" autocomplete="off" spellcheck="false">
+        </div>
+        <button class="verify-btn" id="verify-btn">Verify</button>
+      </div>
+    </section>
+
+    <!-- PROFILE CARD (shown after verify) -->
+    <div class="profile-card" id="profile-card" hidden style="display:none">
+      <div class="profile-card-inner">
+        <div class="profile-avatar-wrap">
+          <img src="" alt="" class="profile-avatar" id="profile-avatar">
+        </div>
+        <div class="profile-info">
+          <div class="profile-name" id="profile-name"></div>
+          <div class="profile-handle" id="profile-handle"></div>
+          <div class="profile-stats">
+            <div class="profile-stat">
+              <span class="stat-num" id="stat-followers">–</span>
+              <span class="stat-lbl">Followers</span>
+            </div>
+            <div class="profile-stat">
+              <span class="stat-num" id="stat-following">–</span>
+              <span class="stat-lbl">Following</span>
+            </div>
+            <div class="profile-stat">
+              <span class="stat-num" id="stat-likes">–</span>
+              <span class="stat-lbl">Likes</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Loader shown while verifying -->
+      <div class="verify-loader" id="verify-loader" hidden style="display:none">
+        <span class="tiktok-loader"></span>
+      </div>
+    </div>
+
+    <!-- STEP 2: Choose package -->
+    <section class="step-card packages-section" id="step-packages" hidden style="display:none">
+      <div class="step-label"><span class="step-num">2</span>Choose a followers package</div>
+      <div class="packages-grid" id="packages-grid">
+        <!-- Filled by JS -->
+      </div>
+    </section>
+
+    <!-- STEP 3: Pay with M-Pesa -->
+    <section class="step-card pay-section" id="step-pay" hidden style="display:none">
+      <div class="step-label"><span class="step-num">3</span>Pay with M-Pesa</div>
+      <div class="mpesa-form">
+        <div class="mpesa-logo-row">
+          <div class="mpesa-logo">
+            <img src="img/mpesa-logo.svg" alt="M-PESA" class="mpesa-logo-img">
+          </div>
+          <div class="pay-summary" id="pay-summary">
+            <!-- filled by JS -->
+          </div>
+        </div>
+        <label class="field-label" for="phone-input">M-Pesa phone number</label>
+        <input type="tel" id="phone-input" class="phone-input-plain"
+          placeholder="07XX XXX XXX  or  01XX XXX XXX  or  254XXXXXXXXX"
+          maxlength="15" inputmode="numeric" autocomplete="tel">
+        <p class="phone-hint">Enter your Safaricom M-Pesa number in any format</p>
+        <button class="pay-btn" id="pay-btn" disabled>
+          Pay via M-Pesa
+        </button>
+      </div>
+    </section>
+
+  </main>
+  <!-- END MAIN -->
+
+  <!-- PROCESSING OVERLAY -->
+  <div id="processing-overlay" class="processing-overlay" hidden style="display:none">
+    <div class="processing-box">
+      <span class="tiktok-loader"></span>
+      <p class="processing-title" id="processing-title">Sending M-Pesa request…</p>
+      <p class="processing-sub" id="processing-sub">Check your phone and enter your M-Pesa PIN</p>
+      <p class="processing-hint" id="processing-hint"></p>
+    </div>
+  </div>
+
+  <!-- CANCELLED SCREEN -->
+  <div id="cancelled-screen" class="result-screen" hidden style="display:none">
+    <div class="result-box">
+      <div class="result-icon cancelled-icon">✕</div>
+      <h2 class="result-title">Payment Cancelled</h2>
+      <p class="result-sub" id="cancelled-msg">You cancelled the M-Pesa request.</p>
+      <button class="back-btn" onclick="resetToStart()">Try Again</button>
+    </div>
+  </div>
+
+  <!-- LOADING FOLLOWERS SCREEN (after payment) -->
+  <div id="loading-screen" class="result-screen" hidden style="display:none">
+    <div class="result-box loading-box">
+      <!-- Top: success check + title -->
+      <div class="success-check">
+        <svg viewBox="0 0 52 52" width="72" height="72" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="26" cy="26" r="25" fill="#2ecc71"/>
+          <path d="M15 27 l7 7 l15 -15" fill="none" stroke="#fff" stroke-width="4.5"
+            stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h2 class="result-title">Payment Confirmed!</h2>
+      <p class="loading-pkg" id="loading-pkg"></p>
+
+      <!-- Follower loading section -->
+      <div class="loading-section">
+        <div class="loading-header">
+          <span class="loading-label">
+            <span class="tiktok-loader small"></span>
+            Loading followers to <strong id="loading-handle">@username</strong>
+          </span>
+          <span class="loading-pct" id="loading-pct">0%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <div class="loading-meta">
+          <span class="loading-status" id="loading-status">Queuing your order…</span>
+          <span class="loading-eta">Up to 72 hours</span>
+        </div>
+      </div>
+
+      <!-- Info cards -->
+      <div class="loading-cards">
+
+        <!-- Card 1: Payment received -->
+        <div class="loading-card">
+          <div class="loading-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="10" fill="#00a550" opacity=".12"/>
+              <circle cx="12" cy="12" r="10" stroke="#00a550" stroke-width="1.5"/>
+              <path d="M7.5 12.5l3 3 6-6" stroke="#00a550" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="loading-card-text">
+            <strong>Payment received</strong>
+            <span>Your M-Pesa transaction was confirmed</span>
+          </div>
+        </div>
+
+        <!-- Card 2: Keep account public -->
+        <div class="loading-card">
+          <div class="loading-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="10" fill="#5a5fe0" opacity=".1"/>
+              <circle cx="12" cy="12" r="10" stroke="#5a5fe0" stroke-width="1.5"/>
+              <ellipse cx="12" cy="12" rx="5" ry="3.2"
+                stroke="#5a5fe0" stroke-width="1.6" stroke-linecap="round"/>
+              <circle cx="12" cy="12" r="1.5" fill="#5a5fe0"/>
+              <path d="M3.5 12c2-4 13-4 17 0" stroke="#5a5fe0" stroke-width="1.6"
+                stroke-linecap="round" opacity=".4"/>
+            </svg>
+          </div>
+          <div class="loading-card-text">
+            <strong>Keep your account public</strong>
+            <span>Private accounts cannot receive followers</span>
+          </div>
+        </div>
+
+        <!-- Card 3: Gradual delivery -->
+        <div class="loading-card">
+          <div class="loading-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="10" fill="#f59e0b" opacity=".1"/>
+              <circle cx="12" cy="12" r="10" stroke="#f59e0b" stroke-width="1.5"/>
+              <circle cx="12" cy="12" r="3.5" stroke="#f59e0b" stroke-width="1.5"/>
+              <path d="M12 4v1.5M12 18.5V20M4 12h1.5M18.5 12H20"
+                stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M12 8.5V12l2.5 2" stroke="#f59e0b" stroke-width="1.5"
+                stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="loading-card-text">
+            <strong>Gradual delivery</strong>
+            <span>Followers are added slowly to look natural</span>
+          </div>
+        </div>
+
+      </div>
+
+      <button class="back-btn secondary-btn" onclick="resetToStart()">Buy More Followers</button>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div id="toast" class="toast" hidden style="display:none"></div>
+
+  <!-- PWA INSTALL BANNER -->
+  <div id="install-banner" class="install-banner" hidden style="display:none">
+    <div class="install-banner-inner">
+      <img src="img/icon-192.png" alt="" class="install-banner-icon">
+      <div class="install-banner-text">
+        <strong>Install TikTok Followers</strong>
+        <span>Add to your home screen</span>
+      </div>
+      <button class="install-banner-btn" id="install-btn">Install</button>
+      <button class="install-banner-dismiss" id="install-dismiss" aria-label="Dismiss">✕</button>
+    </div>
+  </div>
+
+  <script src="js/profile.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

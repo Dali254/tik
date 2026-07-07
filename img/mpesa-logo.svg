@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 72" width="240" height="72">
+  <!-- M-PESA official wordmark: M in red, -PESA in green -->
+  <!-- Red: #D71920  Green: #00A651 — official Safaricom M-Pesa brand colours -->
+  <defs>
+    <style>
+      .logo-text {
+        font-family: Arial Black, Arial, Helvetica, sans-serif;
+        font-size: 56px;
+        font-weight: 900;
+        dominant-baseline: middle;
+      }
+    </style>
+  </defs>
+  <!-- M in red -->
+  <text class="logo-text" x="4" y="38" fill="#D71920">M</text>
+  <!-- -PESA in green -->
+  <text class="logo-text" x="52" y="38" fill="#00A651">-PESA</text>
+</svg>
