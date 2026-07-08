@@ -488,3 +488,116 @@ header {
   .pkg-followers   { font-size: 18px; }
   .phone-input-plain { font-size: 15px; }
 }
+
+/* ============================================================
+   INPUT HINT + LINK DETECTION
+   ============================================================ */
+.input-hint {
+  font-size: 12px; color: var(--tt-muted);
+  margin: 6px 0 0; text-align: center;
+}
+.input-wrap.is-link { border-color: #5a5fe0; }
+.input-wrap.is-link .at-sign { color: #5a5fe0; }
+
+/* ============================================================
+   RATE BADGE
+   ============================================================ */
+.rate-badge {
+  display: inline-flex; align-items: center;
+  background: linear-gradient(135deg,#ecfdf3,#f0fff4);
+  border: 1px solid #c3e8d0;
+  color: var(--green); font-size: 13px; font-weight: 800;
+  padding: 4px 12px; border-radius: 20px;
+  margin: 0 0 14px;
+}
+
+/* ============================================================
+   CUSTOM FOLLOWER ADJUSTER
+   ============================================================ */
+.custom-wrap {
+  margin-top: 18px;
+  border: 1.5px solid var(--tt-border);
+  border-radius: var(--r-md);
+  padding: 16px;
+  background: #fafafa;
+}
+.custom-header {
+  display: flex; align-items: center;
+  justify-content: space-between; margin-bottom: 14px;
+}
+.custom-title { font-size: 15px; font-weight: 800; color: var(--tt-black); }
+.custom-price-tag {
+  font-size: 18px; font-weight: 900;
+  color: var(--green); letter-spacing: -.5px;
+}
+
+.custom-display {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 14px;
+}
+.custom-num-input {
+  flex: 1; min-width: 0;
+  height: 52px; padding: 0 14px;
+  border: 1.5px solid var(--tt-border);
+  border-radius: var(--r-sm);
+  font-size: 22px; font-weight: 900;
+  font-family: inherit; color: var(--tt-black);
+  text-align: center; outline: none;
+  transition: border-color .2s, box-shadow .2s;
+  /* hide number input arrows */
+  -moz-appearance: textfield;
+}
+.custom-num-input::-webkit-outer-spin-button,
+.custom-num-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.custom-num-input:focus {
+  border-color: var(--tt-red);
+  box-shadow: 0 0 0 3px rgba(254,44,85,.1);
+}
+.custom-followers-label {
+  font-size: 14px; font-weight: 700;
+  color: var(--tt-muted); flex-shrink: 0;
+  white-space: nowrap;
+}
+
+/* Range slider */
+.custom-slider {
+  width: 100%; height: 6px;
+  -webkit-appearance: none; appearance: none;
+  background: var(--tt-border);
+  border-radius: 3px; outline: none;
+  cursor: pointer; margin-bottom: 6px;
+}
+.custom-slider::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--tt-red); cursor: pointer;
+  box-shadow: 0 2px 8px rgba(254,44,85,.4);
+  transition: transform .15s;
+}
+.custom-slider::-webkit-slider-thumb:hover { transform: scale(1.15); }
+.custom-slider::-moz-range-thumb {
+  width: 24px; height: 24px; border: none;
+  border-radius: 50%; background: var(--tt-red);
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(254,44,85,.4);
+}
+.custom-range-labels {
+  display: flex; justify-content: space-between;
+  font-size: 11px; color: var(--tt-muted);
+  margin-bottom: 16px;
+}
+.custom-select-btn {
+  width: 100%; height: 52px;
+  background: var(--tt-red); color: #fff;
+  border: none; border-radius: var(--r-sm);
+  font-size: 15px; font-weight: 800;
+  font-family: inherit; cursor: pointer;
+  transition: background .15s;
+}
+.custom-select-btn:hover   { background: var(--tt-red-h); }
+.custom-select-btn:active  { background: var(--tt-red-a); }
+
+.custom-wrap.custom-selected {
+  border-color: var(--tt-red);
+  background: #fff5f7;
+}

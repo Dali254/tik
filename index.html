@@ -48,17 +48,19 @@
     <h1 class="page-title">Get TikTok Followers</h1>
     <p class="page-sub">Real followers • Fast delivery • Secure M-Pesa payment</p>
 
-    <!-- STEP 1: Enter username -->
+    <!-- STEP 1: Enter username or link -->
     <section class="step-card" id="step-username">
-      <div class="step-label"><span class="step-num">1</span>Enter your TikTok username</div>
+      <div class="step-label"><span class="step-num">1</span>Enter your TikTok username or link</div>
       <div class="input-row">
-        <div class="input-wrap">
-          <span class="at-sign">@</span>
+        <div class="input-wrap" id="input-wrap">
+          <span class="at-sign" id="at-sign">@</span>
           <input type="text" id="username-input" class="username-input"
-            placeholder="your_username" autocomplete="off" spellcheck="false">
+            placeholder="username or tiktok.com/@username"
+            autocomplete="off" spellcheck="false" autocorrect="off">
         </div>
         <button class="verify-btn" id="verify-btn">Verify</button>
       </div>
+      <p class="input-hint">Paste a profile link or type a username</p>
     </section>
 
     <!-- PROFILE CARD (shown after verify) -->
@@ -86,7 +88,6 @@
           </div>
         </div>
       </div>
-      <!-- Loader shown while verifying -->
       <div class="verify-loader" id="verify-loader" hidden style="display:none">
         <span class="tiktok-loader"></span>
       </div>
@@ -95,8 +96,32 @@
     <!-- STEP 2: Choose package -->
     <section class="step-card packages-section" id="step-packages" hidden style="display:none">
       <div class="step-label"><span class="step-num">2</span>Choose a followers package</div>
+      <p class="rate-badge">KES 50 per 1,000 followers</p>
       <div class="packages-grid" id="packages-grid">
         <!-- Filled by JS -->
+      </div>
+
+      <!-- Custom amount adjuster -->
+      <div class="custom-wrap" id="custom-wrap">
+        <div class="custom-header">
+          <span class="custom-title">🎚 Custom amount</span>
+          <span class="custom-price-tag" id="custom-price-tag">KES 50</span>
+        </div>
+        <div class="custom-display">
+          <input type="number" id="custom-num"
+            class="custom-num-input" value="1000"
+            min="200" max="500000" step="100">
+          <span class="custom-followers-label">followers</span>
+        </div>
+        <input type="range" id="custom-slider"
+          class="custom-slider" value="1000"
+          min="200" max="500000" step="100">
+        <div class="custom-range-labels">
+          <span>200</span><span>125K</span><span>250K</span><span>375K</span><span>500K</span>
+        </div>
+        <button class="custom-select-btn" id="custom-select-btn">
+          Select this amount
+        </button>
       </div>
     </section>
 

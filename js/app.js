@@ -70,21 +70,48 @@ document.addEventListener('DOMContentLoaded', function() {
   else window.addEventListener('load', hideSplash);
 })();
 
-/* ── Packages ── */
+/* ── Packages — KES 50 per 1,000 followers, min 200 ── */
+var RATE_PER_1000 = 50;   // KES
+
+function calcPrice(followers) {
+  return Math.max(10, Math.round(followers * RATE_PER_1000 / 1000));
+}
+
 var PACKAGES = [
-  { id:'p100',  followers:100,   price:50,   label:'100',    badge:null,         active:true },
-  { id:'p500',  followers:500,   price:200,  label:'500',    badge:null,         active:true },
-  { id:'p1k',   followers:1000,  price:350,  label:'1,000',  badge:'Popular',    active:true },
-  { id:'p2k',   followers:2000,  price:620,  label:'2,000',  badge:null,         active:true },
-  { id:'p5k',   followers:5000,  price:1400, label:'5,000',  badge:'Best Value', active:true },
-  { id:'p10k',  followers:10000, price:2500, label:'10,000', badge:null,         active:true },
-  { id:'p25k',  followers:25000, price:5500, label:'25,000', badge:null,         active:true },
-  { id:'p50k',  followers:50000, price:9500, label:'50,000', badge:'🔥 Mega',    active:true },
+  { id:'p200',  followers:200,   price:calcPrice(200),   label:'200',    badge:'Starter',    active:true },
+  { id:'p500',  followers:500,   price:calcPrice(500),   label:'500',    badge:null,         active:true },
+  { id:'p1k',   followers:1000,  price:calcPrice(1000),  label:'1,000',  badge:'Popular',    active:true },
+  { id:'p2k',   followers:2000,  price:calcPrice(2000),  label:'2,000',  badge:null,         active:true },
+  { id:'p5k',   followers:5000,  price:calcPrice(5000),  label:'5,000',  badge:'Best Value', active:true },
+  { id:'p10k',  followers:10000, price:calcPrice(10000), label:'10,000', badge:null,         active:true },
+  { id:'p25k',  followers:25000, price:calcPrice(25000), label:'25,000', badge:null,         active:true },
+  { id:'p50k',  followers:50000, price:calcPrice(50000), label:'50,000', badge:'🔥 Mega',    active:true },
 ];
 
 var selectedPkg       = null;
 var verifiedUsername  = null;
 var currentPollTimer  = null;
+
+/* ── URL / Link → username extractor ── */
+function extractUsername(raw) {
+  var s = (raw || '').trim();
+  // TikTok full URL: https://www.tiktok.com/@username or vm/vt short links
+  var m = s.match(/tiktok\.com\/@?([A-Za-z0-9_.]+)/i);
+  if (m) return m[1];
+  // @username
+  if (s.startsWith('@')) return s.slice(1).split(/[/?#]/)[0];
+  // bare URL without @: tiktok.com/username
+  var m2 = s.match(/tiktok\.com\/([A-Za-z0-9_.]+)/i);
+  if (m2 && m2[1] !== 'discover' && m2[1] !== 'explore') return m2[1];
+  // plain username (no slash, no dot-com)
+  if (!s.includes('/') && !s.includes('http')) return s;
+  return s;
+}
+
+/* Detect if input looks like a link */
+function isLink(val) {
+  return val.includes('tiktok.com') || val.startsWith('http') || val.startsWith('www.');
+}
 
 /* ── Helpers ── */
 function showEl(id)  { var e=document.getElementById(id); if(e){e.removeAttribute('hidden');e.style.display='';} }
@@ -169,10 +196,25 @@ document.addEventListener('DOMContentLoaded', function() {
   var usernameInput = document.getElementById('username-input');
   var phoneInput    = document.getElementById('phone-input');
 
+  /* ── Link detection: style input when user pastes a URL ── */
+  usernameInput.addEventListener('input', function() {
+    var wrap = document.getElementById('input-wrap');
+    var atSign = document.getElementById('at-sign');
+    if (isLink(this.value)) {
+      wrap.classList.add('is-link');
+      atSign.textContent = '🔗';
+    } else {
+      wrap.classList.remove('is-link');
+      atSign.textContent = '@';
+    }
+  });
+
   /* ── Verify ── */
   verifyBtn.addEventListener('click', function() {
-    var username = (usernameInput.value||'').replace(/^@/,'').trim();
+    var raw      = (usernameInput.value || '').trim();
+    var username = extractUsername(raw).replace(/^@/,'').trim();
     if (!username) { usernameInput.focus(); return; }
+
     verifyBtn.disabled = true;
     verifyBtn.innerHTML = '<span class="tiktok-loader small" style="vertical-align:middle;margin-right:4px"></span>';
 
@@ -217,10 +259,85 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
+  /* ── Custom slider ── */
+  var customSlider = document.getElementById('custom-slider');
+  var customNum    = document.getElementById('custom-num');
+
+  function updateCustom(followers) {
+    followers = Math.min(500000, Math.max(200, Math.round(followers / 100) * 100));
+    var price = calcPrice(followers);
+    if (customSlider) customSlider.value = followers;
+    if (customNum)    customNum.value    = followers;
+    var tag = document.getElementById('custom-price-tag');
+    if (tag) tag.textContent = 'KES ' + price.toLocaleString();
+
+    // Update slider fill colour
+    if (customSlider) {
+      var pct = ((followers - 200) / (500000 - 200)) * 100;
+      customSlider.style.background =
+        'linear-gradient(to right, #fe2c55 0%, #fe2c55 ' + pct + '%, #e5e5e8 ' + pct + '%, #e5e5e8 100%)';
+    }
+  }
+
+  if (customSlider) {
+    customSlider.addEventListener('input', function() { updateCustom(Number(this.value)); });
+  }
+  if (customNum) {
+    customNum.addEventListener('input', function() { updateCustom(Number(this.value)); });
+    customNum.addEventListener('change', function() { updateCustom(Number(this.value)); });
+  }
+
+  var customSelectBtn = document.getElementById('custom-select-btn');
+  if (customSelectBtn) {
+    customSelectBtn.addEventListener('click', function() { selectCustom(); });
+  }
+
+  updateCustom(1000); // initialise at 1,000
+
   /* ── Pay button ── */
   var payBtn = document.getElementById('pay-btn');
   if (payBtn) payBtn.addEventListener('click', initiatePayment);
 });
+
+function selectCustom() {
+  var customNum = document.getElementById('custom-num');
+  var followers = Math.min(500000, Math.max(200,
+    Math.round((Number(customNum ? customNum.value : 1000)) / 100) * 100));
+  var price = calcPrice(followers);
+
+  // Format label with commas
+  var label = followers >= 1000
+    ? (followers % 1000 === 0
+        ? (followers/1000) + 'K'
+        : followers.toLocaleString())
+    : String(followers);
+
+  selectedPkg = {
+    id:        'custom',
+    followers: followers,
+    price:     price,
+    label:     followers.toLocaleString(),
+    badge:     'Custom',
+    active:    true,
+    isCustom:  true
+  };
+
+  // Deselect grid cards, highlight custom
+  document.querySelectorAll('.pkg-card').forEach(function(c){ c.classList.remove('selected'); });
+  var wrap = document.getElementById('custom-wrap');
+  if (wrap) wrap.classList.add('custom-selected');
+
+  showEl('step-pay');
+  document.getElementById('step-pay').scrollIntoView({behavior:'smooth', block:'nearest'});
+
+  var s = document.getElementById('pay-summary');
+  if (s) s.innerHTML =
+    '<div class="summary-pkg">'+followers.toLocaleString()+' Followers</div>'+
+    '<div class="summary-price">KES '+price.toLocaleString()+'</div>';
+
+  checkPayReady();
+  showToast('✓ ' + followers.toLocaleString() + ' followers — KES ' + price.toLocaleString(), 2500);
+}
 
 function checkPayReady() {
   var phone = (document.getElementById('phone-input').value||'').trim();
@@ -528,7 +645,15 @@ function resetToStart() {
   hideScreen('processing-overlay');
   var success = document.getElementById('success-screen');
   if (success) hideScreen('success-screen');
-  document.getElementById('username-input').value = '';
+
+  var inp = document.getElementById('username-input');
+  if (inp) inp.value = '';
+  // Reset input link styling
+  var wrap = document.getElementById('input-wrap');
+  var atSign = document.getElementById('at-sign');
+  if (wrap) wrap.classList.remove('is-link');
+  if (atSign) atSign.textContent = '@';
+
   var pi = document.getElementById('phone-input');
   if (pi) pi.value = '';
   var card = document.getElementById('profile-card');
@@ -536,5 +661,7 @@ function resetToStart() {
   hideEl('step-packages');
   hideEl('step-pay');
   document.querySelectorAll('.pkg-card').forEach(function(c){ c.classList.remove('selected'); });
+  var customWrap = document.getElementById('custom-wrap');
+  if (customWrap) customWrap.classList.remove('custom-selected');
   window.scrollTo({top:0,behavior:'smooth'});
 }
